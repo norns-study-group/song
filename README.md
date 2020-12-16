@@ -4,10 +4,12 @@ an open source song for norns
 
 ---
 
-_To see a World in a Grain of Sand
+```
+To see a World in a Grain of Sand
 And a Heaven in a Wild Flower 
 Hold Infinity in the palm of your hand 
-And Eternity in an hour_
+And Eternity in an hour
+```
 
 Auguries of Innocence
 By William Blake
