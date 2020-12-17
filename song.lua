@@ -34,6 +34,7 @@ function init()
   softclock.add('b', 1/4, function(phase) parts:quarter_notes(phase) end)
   softclock.add('c', 3/4, function(phase) parts:dotted_half_notes(phase) end)
   softclock.add('d', 11/17, function(phase) parts:crazy_part(phase) end)
+  softclock.add('e', 1/16, function(phase) parts:sixteenth_notes(phase) end)
   super_metro:start()
   redraw()
 end
