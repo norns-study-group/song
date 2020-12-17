@@ -6,18 +6,25 @@
 --
 --    k2: start    k3: restart
 
-engine.name = "PolyPerc" -- standard issue... for now?!?!
+-- engine.name = "PolyPerc" -- standard issue... for now?!?!
 song = {} -- our song
 softclock = include("lib/softclock") -- global clock
 parts = include("lib/parts") -- musical things
 graphics = include("lib/graphics") -- graphics library
+local SoundEngine = include("lib/soundengine")
+
+local sound_engine = nil
 
 local function super_tick()
   softclock.tick()
 end 
 
 function init()
-  parts.init()
+  sound_engine = SoundEngine.new()
+
+  sound_engine:addParams()
+
+  parts.init(sound_engine)
   graphics.init()
   song.is_screen_dirty = true
   song.is_playing = true
