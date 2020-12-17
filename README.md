@@ -30,3 +30,4 @@ auguries of innocence from william blake has really resonated with me this year.
 ## changelog
 
 - @tyleretters - init project, setup a global transport and examples for how to hook into it, wire up start/stop and restart for k2 and k3, set some basic poly perc stuff (someone, please rip this out and change it!)
+- @schollz - added sixteenth note transports. added in some melodies for quarter notes and sixteenth notes by transforming a recorded midi dump into lua code using soon-to-be released midi script extension for norns.
