@@ -42,15 +42,11 @@ function parts:quarter_notes(phase)
   elseif beat%31==0 then self.soundEngine:bang_note(59, 1, 0)
   elseif beat%29==0 then self.soundEngine:bang_note(60, 1, 0)
   elseif beat%27==0 then self.soundEngine:bang_note(55, 1, 0)
-
-
   elseif beat%25==0 then self.soundEngine:bang_note(52, 1, 0)
   elseif beat%23==0 then self.soundEngine:bang_note(52, 1, 0)
   elseif beat%21==0 then self.soundEngine:bang_note(52, 1, 0)
   elseif beat%17==0 then self.soundEngine:bang_note(48, 1, 0)
   elseif beat%15==0 then self.soundEngine:bang_note(52, 1, 0)
-
-
   elseif beat%11==0 then self.soundEngine:bang_note(52, 1, 0)
   elseif beat%9==0 then self.soundEngine:bang_note(47, 1, 0)
   elseif beat%7==0 then self.soundEngine:bang_note(52, 1, 0)
