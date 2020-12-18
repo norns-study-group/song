@@ -42,7 +42,6 @@ end
 function SoundEngine:addParams()
     for i = 1,SoundEngine.SYNTH_COUNT do
         self:addSynthParams(i)
-        self:setDefaultParams(i)
     end
     for i = 1,SoundEngine.MIDI_COUNT do self:addMidiParams(i) end
 
