@@ -51,13 +51,16 @@ function parts.init(soundEngine)
       parts.xox('x--x------x--x--'),
     ['bap']=
       parts.xox('----x---'),
+    ['nervous']=
+      parts.xox('x-xx')
   }
   -- need to declare these here so they don't get recreated
   parts.state = {
     ['pupil1'] = soundEngine:getSetParam(1, 'cutoff'),
     ['dilation1'] = parts.brownian(50, 800, 5000, 200),
     ['surface1'] = soundEngine:getSetParam(1, 'mod2'),
-    ['shine1'] = parts.brownian(0, 100, 300, 20)
+    ['shine1'] = parts.brownian(0, 100, 300, 20),
+    ['is_nervous'] = false
   }
 
   parts.drumPat = 1
@@ -106,6 +109,13 @@ function parts:whole_notes(phase)
   if song.measure == 8 then self.drumPat = 2 
   elseif song.measure == 16 then self.drumPat = 3
   elseif song.measure == 24 then self.drumPat = 4 end
+
+  -- trig  condition
+  if math.random(5) == 2 then
+    self.state.is_nervous = true
+  else
+    self.state.is_nervous = false
+  end
 
   if song.measure == 100 then
     self.soundEngine:bang_note(62, 1, 0)
@@ -170,6 +180,10 @@ function parts:sixteenth_notes(phase)
       shift_shape1('sinfb')
     elseif self.riddims.and_a(beat) then
       shift_shape1('square_mod2')
+    end
+
+    if self.state.is_nervous and self.riddims.nervous(beat) then
+      self.soundEngine:bang_note(81, 1, 0)
     end
 
     if beat%31==0 then self.soundEngine:bang_note(71, 1, 0)
