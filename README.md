@@ -34,3 +34,4 @@ auguries of innocence from william blake has really resonated with me this year.
 - @Quixotic7 - replaced the polyperc engine with the bangs engine. This allows you to have different sounding note bangs. In the params menu you can change the synth parameters for 4 different synth sources. Sounds are banged by calling soundEngine:bang_note_hz(freq, synthId, midiId) and soundEngine:bang_note(noteNumber, synthId, midiId). Midi bangs only work if calling soundEngine:bang_note so the song currently only works with the internal synths since all the notes are frequencies.
 - @ryanlaws - was being a real prima donna about hz and changed them to MIDI notes. then he added some param setting stuff and a xox-step-pattern thing, plus some patterns, as well as a pretty naive Brownian motion generator.
 - @evanmcook - aka evancook.audio added graphics that like to groove along to the measure number
+- @Quixotic7 - added drum patterns

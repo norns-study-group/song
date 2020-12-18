@@ -24,6 +24,11 @@ function init()
 
   sound_engine:addParams()
 
+  sound_engine:setSynthParams(4, {algo=4, amp=1.0, pan=0, mod1 = 0.2, mod2 = 1.0, cutoff=800, attack=0, release=0.16})
+  sound_engine:setSynthParams(5, {algo=6, amp=0.8, pan=0, mod1 = 0.9, mod2 = 1.68, cutoff=2400, attack=0, release=0.35})
+  sound_engine:setSynthParams(6, {algo=7, amp=0.5, pan=0, mod1 = 0.8, mod2 = 2.64, cutoff=3300, attack=0.001, release=0.03})
+
+
   parts.init(sound_engine)
   graphics.init()
   song.is_screen_dirty = true
@@ -31,6 +36,7 @@ function init()
   song.transport = 0
   song.measure = 0
   song.division = 8
+
   super_metro = metro.init{
     time = 1 / song.division,
     event= super_tick
