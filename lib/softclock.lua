@@ -9,58 +9,71 @@
 
 local softclock = {}
 
--- this field represents the period of the superclock, in seconds
-softclock.super_period = 1/128
+function softclock.init()
+  -- this field represents the period of the superclock in ppqn
+  softclock.super_period = 96
+  softclock.transport = 0
+  softclock.song_clocks = {}
+  softclock.sources = {}
+  softclock.sources[1] = "internal"
+  softclock.sources[2] = "midi"
+  softclock.sources[3] = "link"
+  softclock.sources[4] = "crow"
+end
 
-softclock.clocks = {}
+function softclock.super_tick()
+  while true do
+    clock.sync(1 / softclock.super_period)
+    softclock.transport = softclock.transport + 1
 
--- call this from the superclock
-softclock.tick = function()
-  if song.is_playing then
-    -- increment the global transport and potentially update the measure
-    song.transport = song.transport + 1
-    if song.transport % song.division == 1 then
-      song.measure = song.measure + 1
-      song.is_screen_dirty = true
-    end
+    if song.is_playing then
 
-    -- then update all our clocks
-    for id, clock in pairs(softclock.clocks) do
-      clock.phase_ticks = clock.phase_ticks + 1
-      -- asumption: subclock period is > 1 tick
-      if clock.phase_ticks > clock.period_ticks then
-        -- save the remainder
-        -- (this might need to be a while-loop to catch edge cases?)
-        clock.phase_ticks = clock.phase_ticks - clock.period_ticks
-        -- and fire the event
-        -- (maybe it is useful for the event to get the fractional phase, IDK)
-        clock.event(clock.phase_ticks)
+      if softclock.transport % softclock.super_period == 1 then
+        song.step = fn.cycle(song.step + 1, 1, song.division)
+        if song.step == 1 then
+          song.measure = song.measure + 1
+          song.is_screen_dirty = true
+        end
+      end
+
+      -- then update all our clocks
+      for id, song_clock in pairs(softclock.song_clocks) do
+        song_clock.phase_ticks = song_clock.phase_ticks + 1
+        -- asumption: subclock period is > 1 tick
+        if song_clock.phase_ticks > song_clock.period_ticks then
+          -- save the remainder
+          -- (this might need to be a while-loop to catch edge cases?)
+          song_clock.phase_ticks = song_clock.phase_ticks - song_clock.period_ticks
+          -- and fire the event
+          -- (maybe it is useful for the event to get the fractional phase, IDK)
+          song_clock.event(song_clock.phase_ticks)
+        end
       end
     end
-  end
 
-  -- check if we need to redraw
-  if song.is_screen_dirty then
-    redraw()
-    song.is_screen_dirty = false
+    -- check if we need to redraw
+    if song.is_screen_dirty then
+      redraw()
+      song.is_screen_dirty = false
+    end
   end
 end 
 
-softclock.add = function(id, period, event) 
+function softclock:add(id, period, event) 
   local c = {} -- new subclock table
   c.phase_ticks = 0
   -- convert argument from seconds to superclock ticks
-  c.period_ticks = period / softclock.super_period
-  print('adding clock; id ='..id..'; period_ticks='..c.period_ticks)
+  c.period_ticks = period / (1 / self.super_period) * song.division
+  print('adding song_clock; id ='..id..'; period_ticks='..c.period_ticks)
   c.event = event
-  softclock.clocks[id] = c
+  self.song_clocks[id] = c
 end 
 
-softclock.remove = function(id) 
+function softclock:remove(id) 
   -- TODO
 end 
 
-softclock.clear = function() 
+function softclock:clear () 
   -- TODO
 end 
 

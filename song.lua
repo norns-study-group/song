@@ -1,13 +1,13 @@
 -- k1: exit  e1: ???
 --
 --
---      e2: ???      e3: ???
+--      e2: tempo      e3: ???
 --
 --
 --    k2: start    k3: restart
 
--- engine.name = "PolyPerc" -- standard issue... for now?!?!
 song = {} -- our song
+include("lib/functions") -- global functions
 softclock = include("lib/softclock") -- global clock
 parts = include("lib/parts") -- musical things
 graphics = include("lib/graphics") -- graphics library
@@ -15,40 +15,27 @@ local SoundEngine = include("lib/soundengine")
 
 local sound_engine = nil
 
-local function super_tick()
-  softclock.tick()
-end 
-
 function init()
   sound_engine = SoundEngine.new()
-
   sound_engine:addParams()
-
   sound_engine:setSynthParams(4, {algo=4, amp=1.0, pan=0, mod1 = 0.2, mod2 = 1.0, cutoff=800, attack=0, release=0.16})
   sound_engine:setSynthParams(5, {algo=6, amp=0.8, pan=0, mod1 = 0.9, mod2 = 1.68, cutoff=2400, attack=0, release=0.35})
   sound_engine:setSynthParams(6, {algo=7, amp=0.5, pan=0, mod1 = 0.8, mod2 = 2.64, cutoff=3300, attack=0.001, release=0.03})
-
-
   parts.init(sound_engine)
   graphics.init()
+  softclock.init()
   song.is_screen_dirty = true
   song.is_playing = true
-  song.transport = 0
+  song.step = 0
   song.measure = 0
   song.division = 8
-
-  super_metro = metro.init{
-    time = 1 / song.division,
-    event= super_tick
-  }
-  softclock.super_period = 1 / song.division
   -- add independent clocks here and their respective parts here
-  softclock.add('a', 1, function(phase) parts:whole_notes(phase) end)
-  softclock.add('b', 1/4, function(phase) parts:quarter_notes(phase) end)
-  softclock.add('c', 3/4, function(phase) parts:dotted_half_notes(phase) end)
-  softclock.add('d', 11/17, function(phase) parts:crazy_part(phase) end)
-  softclock.add('e', 1/16, function(phase) parts:sixteenth_notes(phase) end)
-  super_metro:start()
+  softclock:add('a', 1, function(phase) parts:whole_notes(phase) end)
+  softclock:add('b', 1/4, function(phase) parts:quarter_notes(phase) end)
+  softclock:add('c', 3/4, function(phase) parts:dotted_half_notes(phase) end)
+  softclock:add('d', 11/17, function(phase) parts:crazy_part(phase) end)
+  softclock:add('e', 1/16, function(phase) parts:sixteenth_notes(phase) end)
+  song._clock_id = clock.run(softclock.super_tick)
   redraw()
 end
 
@@ -56,8 +43,14 @@ function redraw()
   graphics:setup()
   graphics:rect(1, 1, 7, 64, 15)
   graphics:text_rotate(7, 62, "SONG", -90, 0)
-  graphics:text(10, 7, (song.is_playing == true) and "PLAYING" or "STOPPED", 15)
-  graphics:text(10, 14, "MEASURE: " .. song.measure, 15)
+  graphics:text_right(64, 7, "STATUS:", 15)
+  graphics:text(70, 7, (song.is_playing == true) and "PLAYING" or "STOPPED", 15)
+  graphics:text_right(64, 14, "MEASURE: ", 15)
+  graphics:text(70, 14, song.measure, 15)
+  graphics:text_right(64, 21, "BPM (E2): ", 15)
+  graphics:text(70, 21, params:get("clock_tempo"), 15)
+  graphics:text_right(64, 28, "SOURCE: ", 15)
+  graphics:text(70, 28, string.upper(softclock.sources[params:get("clock_source")]), 15)
   legalGraphics()
   illegalGraphics()
   checkIfNice()
@@ -80,7 +73,7 @@ function legalGraphics()
   if (song.measure%4 == 0) then
     bright = song.measure%15
     radness = song.measure%9-song.measure%2
-    graphics:circle(64,32,radness,bright)
+    graphics:circle(64,48,radness,bright)
    end
   if (song.measure%3==0 and song.measure%7==0) then
     graphics:bez(100,60,0,80,100,119)
@@ -103,9 +96,13 @@ end
 
 function enc(e, d)
   print(e, d, "???")
+  if e == 2 then
+    params:set("clock_tempo", util.clamp((params:get("clock_tempo") + d), 20, 300))
+  end
   song.is_screen_dirty = true
 end
 
-function rerun()
-  norns.script.load(norns.state.script)
+function cleanup()
+  _midi:all_off()
+  clock.cancel(song._clock_id)
 end
