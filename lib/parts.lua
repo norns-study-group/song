@@ -111,11 +111,7 @@ function parts:whole_notes(phase)
   elseif song.measure == 24 then self.drumPat = 4 end
 
   -- trig  condition
-  if math.random(5) == 2 then
-    self.state.is_nervous = true
-  else
-    self.state.is_nervous = false
-  end
+  self.state.is_nervous = (math.random(5) == 2)
 
   if song.measure == 100 then
     self.soundEngine:bang_note(62, 1, 0)
