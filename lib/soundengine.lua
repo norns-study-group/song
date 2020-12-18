@@ -8,7 +8,7 @@ local MidiBangs = include("lib/midibangs")
 local SoundEngine = {}
 SoundEngine.__index = SoundEngine
 
-SoundEngine.SYNTH_COUNT = 4
+SoundEngine.SYNTH_COUNT = 8
 SoundEngine.MIDI_COUNT = 16
 
 
@@ -56,6 +56,19 @@ function SoundEngine:addSynthParams(id)
     params:add{ type = "control", id = "attack_"..id, name = "Attack",controlspec = controlspec.new(0.0001, 10, 'exp', 0, 0.01, 's') }
     -- controlspec.new(0.1,3.2,'lin',0,1.2,'s')
     params:add{ type = "control", id = "release_"..id, name = "Release",controlspec = controlspec.new(0.0001, 10, 'exp', 0, 1.0, 's') }
+end
+
+function SoundEngine:setSynthParams(id, synthParams)
+    if synthParams == nil then return end
+
+    if synthParams.algo then params:set("algo_"..id, synthParams.algo) end
+    if synthParams.amp then params:set("amp_"..id, synthParams.amp) end
+    if synthParams.pan then params:set("pan_"..id, synthParams.pan) end
+    if synthParams.mod1 then params:set("mod1_"..id, synthParams.mod1) end
+    if synthParams.mod2 then params:set("mod2_"..id, synthParams.mod2) end
+    if synthParams.cutoff then params:set("cutoff_"..id, synthParams.cutoff) end
+    if synthParams.attack then params:set("attack_"..id, synthParams.attack) end
+    if synthParams.release then params:set("release_"..id, synthParams.release) end
 end
 
 function SoundEngine:addMidiParams(id)
