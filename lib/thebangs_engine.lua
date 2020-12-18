@@ -7,6 +7,10 @@ Thebangs.options.algoNames = {
    "reznoise",
    "klangexp", "klanglin"
 }
+Thebangs.options.algoIndexesByName = {}
+for i, name in pairs(Thebangs.options.algoNames) do
+   Thebangs.options.algoIndexesByName[name] = i
+end
 
 Thebangs.options.stealModes = {
    "static", "FIFO", "LIFO", "ignore"

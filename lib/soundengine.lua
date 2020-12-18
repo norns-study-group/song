@@ -11,6 +11,22 @@ SoundEngine.__index = SoundEngine
 SoundEngine.SYNTH_COUNT = 8
 SoundEngine.MIDI_COUNT = 16
 
+function SoundEngine:getSetParam(id, name)
+    local index = name..'_'..id
+    if name == 'algo' then
+        return function (value)
+            params:set(index, TheBangs.options.algoIndexesByName[value])
+        end
+    else
+        return function (value)
+            params:set(index, value)
+        end
+    end
+end
+
+function SoundEngine:velocitude(id, velocitude)
+    self:getSetParam(id, 'amp')(velocitude)
+end
 
 function SoundEngine.new()
     local s = setmetatable({}, SoundEngine)
@@ -24,7 +40,9 @@ function SoundEngine.new()
 end
 
 function SoundEngine:addParams()
-    for i = 1,SoundEngine.SYNTH_COUNT do self:addSynthParams(i) end
+    for i = 1,SoundEngine.SYNTH_COUNT do
+        self:addSynthParams(i)
+    end
     for i = 1,SoundEngine.MIDI_COUNT do self:addMidiParams(i) end
 
     params:add_separator()
