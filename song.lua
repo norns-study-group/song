@@ -52,6 +52,9 @@ function redraw()
   graphics:text_rotate(7, 62, "SONG", -90, 0)
   graphics:text(10, 7, (song.is_playing == true) and "PLAYING" or "STOPPED", 15)
   graphics:text(10, 14, "MEASURE: " .. song.measure, 15)
+  legalGraphics()
+  illegalGraphics()
+  checkIfNice()
   graphics:teardown()
 end
 
@@ -65,6 +68,31 @@ function key(k, z)
     song.measure = 0
   end
   song.is_screen_dirty = true
+end
+
+function legalGraphics()
+  if (song.measure%4 == 0) then
+    bright = song.measure%15
+    radness = song.measure%9-song.measure%2
+    graphics:circle(64,32,radness,bright)
+   end
+  if (song.measure%3==0 and song.measure%7==0) then
+    graphics:bez(100,60,0,80,100,119)
+    end
+end
+
+function illegalGraphics()
+if (song.measure>=420 and song.measure<430) then
+    graphics:text(10, 28, "these measures ", 15)
+    graphics:text(10, 35, "are illegal to ", 15)
+    graphics:text(10, 42, "inhale ", 15)
+  end
+end
+
+function checkIfNice()
+  if (song.measure==69) then
+    graphics:text(10, 21, "nice", 15)
+    end
 end
 
 function enc(e, d)
