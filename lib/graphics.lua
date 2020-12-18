@@ -71,4 +71,9 @@ function graphics:text_center_rotate(x, y, s, d, l)
   screen.text_center_rotate(x, y, s, d)
 end
 
+function graphics:bez(x1, y1, x2, y2, x3, y3)
+  screen.curve(x1, y1, x2, y2, x3, y3)
+  screen:stroke ()
+end
+
 return graphics
