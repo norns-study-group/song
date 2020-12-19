@@ -63,6 +63,9 @@ function parts.init(soundEngine)
     ['is_nervous'] = false
   }
 
+  -- chords
+  soundEngine:setSynthParams(3,{amp=0.2,cutoff=1500,attack=clock.get_beat_sec()*4,release=clock.get_beat_sec()*16})
+
   parts.drumPat = 1
 
   parts.drums = {}
@@ -197,6 +200,31 @@ function parts:sixteenth_notes(phase)
     elseif beat%1==0 then self.soundEngine:bang_note(57, 1, 0)
     end
   end
+
+  if song.measure<16 then
+  elseif beat%128==113 then
+    self.soundEngine:bang_note(67,3,0)
+  elseif beat%128==97 then
+    print("chord4")
+    self.soundEngine:bang_note(59,3,0)
+    self.soundEngine:bang_note(64,3,0)
+    self.soundEngine:bang_note(62,3,0)
+    self.soundEngine:bang_note(55,3,0)
+  elseif beat%128==65 then
+    self.soundEngine:bang_note(57,3,0)
+    self.soundEngine:bang_note(64,3,0)
+    self.soundEngine:bang_note(53,3,0)
+    self.soundEngine:bang_note(60,3,0)
+  elseif beat%128==33 then
+    self.soundEngine:bang_note(64,3,0)
+    self.soundEngine:bang_note(59,3,0)
+    self.soundEngine:bang_note(55,3,0)
+  elseif beat%128==1 then
+    self.soundEngine:bang_note(60,3,0)
+    self.soundEngine:bang_note(64,3,0)
+    self.soundEngine:bang_note(57,3,0)
+  end
+
 
   local noteIndex = (self.sixteenth_beat % 16) + 1
 
