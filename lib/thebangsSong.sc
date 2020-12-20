@@ -55,12 +55,12 @@ Thebangssong  {
 
 	//--- setters
 	bang_{ arg name;
-		postln("bang_("++name++")");
+		// postln("bang_("++name++")");
 		thebang = name;
 	}
 
 	whichBang_ { arg i;
-		postln("whichBang_("++i++")");
+		// postln("whichBang_("++i++")");
 		whichbang = i;
 		thebang = bangs[whichbang];
 	}

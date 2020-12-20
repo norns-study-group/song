@@ -98,12 +98,9 @@ function parts.init(soundEngine)
     1,0,1,0,
     1,0,1,0}
 
-  -- parts.whatever_we_need = 0
 end
 
 function parts:whole_notes(phase)
-  print("do a whole notes thing", phase)
-
   self.soundEngine:bang_note(69, 2, 0)
 
   if song.measure == 8 then self.drumPat = 2 
@@ -123,7 +120,6 @@ function parts:whole_notes(phase)
 end
 
 function parts:quarter_notes(phase)
-  print("do a quarter_notes thing", phase)
   if math.random(1, 2) == 1 then
     self.soundEngine:bang_note(81, 2, 0)
   end
@@ -213,14 +209,6 @@ function parts:sixteenth_notes(phase)
   if pat.hh[noteIndex] == 1 then
     self.soundEngine:bang_note(60, 6, 0)
   end
-end
-
-function parts:dotted_half_notes(phase)
-  print("do a dotted_half_notes thing", phase)
-end
-
-function parts:crazy_part(phase)
-  print("do a crazy_part thing", phase)
 end
 
 

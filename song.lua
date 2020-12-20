@@ -26,15 +26,14 @@ function init()
   softclock.init()
   song.is_screen_dirty = true
   song.is_playing = true
-  song.step = 0
   song.measure = 0
-  song.division = 8
+  -- who needs music theory when math?
+  song.numerator = 0
+  song.denominator = 4
   -- add independent clocks here and their respective parts here
   softclock:add('a', 1, function(phase) parts:whole_notes(phase) end)
   softclock:add('b', 1/4, function(phase) parts:quarter_notes(phase) end)
-  softclock:add('c', 3/4, function(phase) parts:dotted_half_notes(phase) end)
-  softclock:add('d', 11/17, function(phase) parts:crazy_part(phase) end)
-  softclock:add('e', 1/16, function(phase) parts:sixteenth_notes(phase) end)
+  softclock:add('c', 1/16, function(phase) parts:sixteenth_notes(phase) end)
   song._clock_id = clock.run(softclock.super_tick)
   redraw()
 end
@@ -51,6 +50,7 @@ function redraw()
   graphics:text(70, 21, params:get("clock_tempo"), 15)
   graphics:text_right(64, 28, "SOURCE: ", 15)
   graphics:text(70, 28, string.upper(softclock.sources[params:get("clock_source")]), 15)
+  graphics:draw_measure()
   legalGraphics()
   illegalGraphics()
   checkIfNice()
@@ -65,6 +65,8 @@ function key(k, z)
     song.is_playing = not song.is_playing
   elseif k == 3 then
     song.measure = 0
+    parts.quarter_beat = 0
+    parts.sixteenth_beat = 0
   end
   song.is_screen_dirty = true
 end
