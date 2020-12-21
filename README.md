@@ -38,3 +38,4 @@ auguries of innocence from william blake has really resonated with me this year.
 - @ryanlaws - added some param setting stuff and a xox-step-pattern thing, plus some patterns, as well as a pretty naive Brownian motion generator. then added a "nervous" ting
 - @tyleretters - use norns clock and e2 to control bpm
 - @schollz - added chords (Am, Em, F, G)
+- @tyleretters - rationalize bpm and terminology

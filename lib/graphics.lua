@@ -17,6 +17,18 @@ function graphics:teardown()
   screen.ping()
 end
 
+function graphics:draw_measure()
+  local width = 3
+  local x = 128 - width
+  local y = 1
+  for i = 1, song.denominator do
+    self:rect(x, i * (y + width) - width, width, width, (i == song.numerator) and 15 or 1)
+    if song.numerator == 1 then
+      self:mlrs(x - 2, 1, 1, song.denominator * (width + 1), 15)
+    end
+  end
+end
+
 function graphics:mlrs(x1, y1, x2, y2, l)
   screen.level(l or 15)
   screen.move(x1, y1)

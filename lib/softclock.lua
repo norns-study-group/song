@@ -29,11 +29,13 @@ function softclock.super_tick()
     if song.is_playing then
 
       if softclock.transport % softclock.super_period == 1 then
-        song.step = fn.cycle(song.step + 1, 1, song.division)
-        if song.step == 1 then
-          song.measure = song.measure + 1
-          song.is_screen_dirty = true
-        end
+        song.numerator = fn.cycle(song.numerator + 1, 1, song.denominator)
+        song.is_screen_dirty = true
+      end
+
+      if softclock.transport % (softclock.super_period * song.denominator) == 1 then
+        song.measure = song.measure + 1
+        song.is_screen_dirty = true
       end
 
       -- then update all our clocks
@@ -63,7 +65,7 @@ function softclock:add(id, period, event)
   local c = {} -- new subclock table
   c.phase_ticks = 0
   -- convert argument from seconds to superclock ticks
-  c.period_ticks = period / (1 / self.super_period) * song.division
+  c.period_ticks = period / (1 / self.super_period) * song.denominator
   print('adding song_clock; id ='..id..'; period_ticks='..c.period_ticks)
   c.event = event
   self.song_clocks[id] = c
