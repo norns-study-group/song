@@ -51,9 +51,10 @@ function redraw()
   graphics:text_right(64, 28, "SOURCE: ", 15)
   graphics:text(70, 28, string.upper(softclock.sources[params:get("clock_source")]), 15)
   graphics:draw_measure()
-  legalGraphics()
-  illegalGraphics()
-  checkIfNice()
+  graphics:legalGraphics()
+  graphics:illegalGraphics()
+  graphics:checkIfNice()
+  graphics:thankUser()
   graphics:teardown()
 end
 
@@ -64,36 +65,9 @@ function key(k, z)
   elseif k == 2 then
     song.is_playing = not song.is_playing
   elseif k == 3 then
-    song.measure = 0
-    parts.quarter_beat = 0
-    parts.sixteenth_beat = 0
+    resetSong()
   end
   song.is_screen_dirty = true
-end
-
-function legalGraphics()
-  if (song.measure%4 == 0) then
-    bright = song.measure%15
-    radness = song.measure%9-song.measure%2
-    graphics:circle(64,48,radness,bright)
-   end
-  if (song.measure%3==0 and song.measure%7==0) then
-    graphics:bez(100,60,0,80,100,119)
-    end
-end
-
-function illegalGraphics()
-  if (song.measure>=420 and song.measure<430) then
-    graphics:text(25, 50, "these measures ", 15)
-    graphics:text(25, 57, "are illegal to inhale ", 15)
-  end
-
-end
-
-function checkIfNice()
-  if (song.measure==69) then
-    graphics:text(80, 14, "(nice.)", 15)
-  end
 end
 
 function enc(e, d)
@@ -102,6 +76,13 @@ function enc(e, d)
     params:set("clock_tempo", util.clamp((params:get("clock_tempo") + d), 20, 300))
   end
   song.is_screen_dirty = true
+end
+
+
+function resetSong()
+    song.measure = 0
+    parts.quarter_beat = 0
+    parts.sixteenth_beat = 0
 end
 
 function cleanup()

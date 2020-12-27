@@ -34,6 +34,9 @@ function parts.init(soundEngine)
   parts.soundEngine = soundEngine
   parts.quarter_beat = 0
   parts.sixteenth_beat = 0
+  -- parts.endingMeas is the measure at which the song stops, as determined by an pseudo RNG  with a range between 
+  -- the first parameter of the random method and the second, both inclusive
+  parts.endingMeas = math.random(450,500)
 
   -- <3 stepseq fam
   parts.riddims = {
@@ -108,7 +111,11 @@ function parts:whole_notes(phase)
 
   if song.measure == 8 then self.drumPat = 2 
   elseif song.measure == 16 then self.drumPat = 3
-  elseif song.measure == 24 then self.drumPat = 4 end
+  elseif song.measure == 24 then self.drumPat = 4 
+  elseif song.measure >= parts.endingMeas then
+    song.is_playing = false 
+    song.is_screen_dirty = true
+  end
 
   -- trig  condition
   self.state.is_nervous = (math.random(5) == 2)
