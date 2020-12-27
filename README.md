@@ -39,3 +39,4 @@ auguries of innocence from william blake has really resonated with me this year.
 - @tyleretters - use norns clock and e2 to control bpm
 - @schollz - added chords (Am, Em, F, G)
 - @tyleretters - rationalize bpm and terminology
+- @evanmcook - aka evancook.audio returned to revise the graphics and add a method by which the song ends
