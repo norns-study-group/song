@@ -112,9 +112,9 @@ function parts:whole_notes(phase)
   if song.measure == 8 then self.drumPat = 2 
   elseif song.measure == 16 then self.drumPat = 3
   elseif song.measure == 24 then self.drumPat = 4 
-  elseif song.measure >= parts.endingMeas then  
-    song.is_screen_dirty = true
+  elseif song.measure >= parts.endingMeas then
     song.is_playing = false 
+    song.is_screen_dirty = true
   end
 
   -- trig  condition
