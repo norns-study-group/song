@@ -83,17 +83,17 @@ function legalGraphics()
 end
 
 function illegalGraphics()
-if (song.measure>=420 and song.measure<430) then
-    graphics:text(10, 28, "these measures ", 15)
-    graphics:text(10, 35, "are illegal to ", 15)
-    graphics:text(10, 42, "inhale ", 15)
+  if (song.measure>=420 and song.measure<430) then
+    graphics:text(25, 50, "these measures ", 15)
+    graphics:text(25, 57, "are illegal to inhale ", 15)
   end
+
 end
 
 function checkIfNice()
   if (song.measure==69) then
-    graphics:text(10, 21, "nice", 15)
-    end
+    graphics:text(80, 14, "(nice.)", 15)
+  end
 end
 
 function enc(e, d)
